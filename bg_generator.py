@@ -96,7 +96,9 @@ def progress_bar(val, start=0, end=100, style='percent', fill='='):
 	
 
 
-ap = argparse.ArgumentParser()
+ap = argparse.ArgumentParser(
+	formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+	description="Generate background for video input")
 ap.add_argument("-i", "--input", required=True, 
 	help="Filename of input video")
 ap.add_argument("-p", "--project", action="store_true", 
