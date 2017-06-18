@@ -3,7 +3,7 @@ import numpy as np
 import argparse
 import sys
 
-def MovingAvg(source, output="bg.png", val=0.01, show_process=False):
+def MovingAvg(source, output="bg.png", val=0.01, show_process=False, delay=0.0):
 
 	max_frames = source.get(cv2.CAP_PROP_FRAME_COUNT)
 
@@ -64,7 +64,15 @@ def MovingAvg(source, output="bg.png", val=0.01, show_process=False):
 			k = cv2.waitKey(1)
 			if k & 255 == 27:
 				break
+			elif k & 255 == 32:
+				cv2.imshow('bg_snap', res)
+				print(output.split('.')[0] + "_snap" + output.split('.')[1])
+				cv2.imwrite(output.split('.')[0] + "_snap." + output.split('.')[1], res)				
 
+
+		if(delay != 0.0):
+			from time import sleep
+			sleep(delay)
 	print("Background image at " + output)
 
 	if(show_process):
@@ -107,18 +115,24 @@ ap.add_argument("-o", "--output", default=None,
 	help="Filename for background image with extension")
 ap.add_argument("-val", "--value", default=0.1, 
 	help="Value to be used for moving average")
+ap.add_argument("-d", "--delay", default=0.0, 
+	help="Slow down video by adding delay")
+
 args = ap.parse_args()
 
 source = args.input
 show_process = args.project
 output = args.output
 value = float(args.value)
+delay = float(args.delay)
 
 if(output is None):
 	output = source.split('.')[0] + "_bg.png"
 
+print("Press SPACE to take a snap during process.")
+
 cam = cv2.VideoCapture(source)
 
-MovingAvg(cam, output=output, val=value, show_process=show_process)
+MovingAvg(cam, output=output, val=value, show_process=show_process, delay=delay)
 
 cam.release()
