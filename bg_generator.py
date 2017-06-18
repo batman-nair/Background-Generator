@@ -3,7 +3,7 @@ import numpy as np
 import argparse
 import sys
 
-def MovingAvg(source, output="bg.png", val=0.01):
+def MovingAvg(source, output="bg.png", val=0.01, show_process=False):
 
 	max_frames = source.get(cv2.CAP_PROP_FRAME_COUNT)
 
@@ -103,7 +103,7 @@ ap.add_argument("-i", "--input", required=True,
 	help="Filename of input video")
 ap.add_argument("-p", "--project", action="store_true", 
 	help="Project images as it is processed")
-ap.add_argument("-o", "--output", default='bg.png', 
+ap.add_argument("-o", "--output", default=None, 
 	help="Filename for background image with extension")
 ap.add_argument("-val", "--value", default=0.1, 
 	help="Value to be used for moving average")
@@ -114,8 +114,11 @@ show_process = args.project
 output = args.output
 value = float(args.value)
 
+if(output is None):
+	output = source.split('.')[0] + "_bg.png"
+
 cam = cv2.VideoCapture(source)
 
-MovingAvg(cam, output=output, val=value)
+MovingAvg(cam, output=output, val=value, show_process=show_process)
 
 cam.release()
