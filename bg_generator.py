@@ -66,7 +66,6 @@ def MovingAvg(source, output="bg.png", val=0.01, show_process=False, delay=0.0):
 				break
 			elif k & 255 == 32:
 				cv2.imshow('bg_snap', res)
-				print(output.split('.')[0] + "_snap" + output.split('.')[1])
 				cv2.imwrite(output.split('.')[0] + "_snap." + output.split('.')[1], res)				
 
 
