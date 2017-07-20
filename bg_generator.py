@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import argparse
 import sys
+import os
 
 def MovingAvg(source, output="bg.png", val=0.01, show_process=False, delay=0.0):
 
@@ -66,7 +67,8 @@ def MovingAvg(source, output="bg.png", val=0.01, show_process=False, delay=0.0):
 				break
 			elif k & 255 == 32:
 				cv2.imshow('bg_snap', res)
-				cv2.imwrite(output.split('.')[0] + "_snap." + output.split('.')[1], res)				
+				filename, file_ext = os.path.splitext(output)
+				cv2.imwrite(filename + '_snap' + file_ext, res)				
 
 
 		if(delay != 0.0):
@@ -126,7 +128,8 @@ value = float(args.value)
 delay = float(args.delay)
 
 if(output is None):
-	output = source.split('.')[0] + "_bg.png"
+	filename, file_ext = os.path.splitext(source)
+	output = filename + '_bg.png'
 
 print("Press SPACE to take a snap during process.")
 
